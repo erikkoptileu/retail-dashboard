@@ -2,17 +2,8 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import styles from '../styles/Home.module.css'
 
-// Chart.js нужно загружать только на клиенте (нет доступа к window на сервере)
-const Bar     = dynamic(() => import('react-chartjs-2').then(m => m.Bar),     { ssr: false })
-const Doughnut= dynamic(() => import('react-chartjs-2').then(m => m.Doughnut),{ ssr: false })
-
-// Регистрируем Chart.js только на клиенте
-if (typeof window !== 'undefined') {
-  const { Chart, CategoryScale, LinearScale, BarElement, ArcElement,
-          LineElement, PointElement, Title, Tooltip, Legend } = require('chart.js')
-  Chart.register(CategoryScale, LinearScale, BarElement, ArcElement,
-                 LineElement, PointElement, Title, Tooltip, Legend)
-}
+const Bar      = dynamic(() => import('react-chartjs-2').then(m => m.Bar),      { ssr: false })
+const Doughnut = dynamic(() => import('react-chartjs-2').then(m => m.Doughnut), { ssr: false })
 
 const fmt = (n) =>
   new Intl.NumberFormat('ru-RU').format(Math.round(n)) + ' ₸'
@@ -24,11 +15,20 @@ const STATUS_LABELS = {
 }
 
 export default function Home() {
-  const [data, setData]       = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError]     = useState(null)
+  const [data, setData]           = useState(null)
+  const [loading, setLoading]     = useState(true)
+  const [error, setError]         = useState(null)
+  const [chartsReady, setCharts]  = useState(false)
 
   useEffect(() => {
+    // Регистрируем Chart.js только на клиенте, до рендера графиков
+    import('chart.js').then(({ Chart, CategoryScale, LinearScale, BarElement,
+      ArcElement, LineElement, PointElement, Title, Tooltip, Legend }) => {
+      Chart.register(CategoryScale, LinearScale, BarElement, ArcElement,
+                     LineElement, PointElement, Title, Tooltip, Legend)
+      setCharts(true)
+    })
+
     fetch('/api/stats')
       .then(r => r.json())
       .then(d => { setData(d); setLoading(false) })
@@ -111,7 +111,7 @@ export default function Home() {
 
       <div className={styles.card}>
         <h2>Заказы по дням</h2>
-        <Bar data={barData} options={barOptions} />
+        {chartsReady && <Bar data={barData} options={barOptions} />}
       </div>
 
       <div className={styles.row}>
@@ -136,10 +136,10 @@ export default function Home() {
 
         <div className={styles.card} style={{ flex: 1 }}>
           <h2>Источники заказов</h2>
-          <Doughnut
+          {chartsReady && <Doughnut
             data={donutData}
             options={{ plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } }}
-          />
+          />}
         </div>
       </div>
 
