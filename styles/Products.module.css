@@ -1,0 +1,83 @@
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.kpiCard {
+  background: #fff;
+  border: 1px solid #e8eaf0;
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.kpiVal   { font-size: 22px; font-weight: 700; color: #111827; letter-spacing: -0.4px; }
+.kpiLabel { font-size: 12px; color: #9ca3af; margin-top: 3px; }
+
+.card {
+  background: #fff;
+  border: 1px solid #e8eaf0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  overflow: hidden;
+}
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cardHeader h2 { font-size: 14px; font-weight: 600; color: #374151; }
+
+.tabs { display: flex; gap: 4px; }
+.tab {
+  padding: 5px 12px;
+  border: 1px solid #e8eaf0;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab:hover { background: #f3f4f6; }
+.tabActive { background: #ede9fe !important; border-color: #c4b5fd !important; color: #6d28d9 !important; font-weight: 600; }
+
+.chartWrap { height: 320px; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.table thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  background: #f9fafb;
+  border-bottom: 1px solid #e8eaf0;
+}
+.table tbody tr { border-bottom: 1px solid #f3f4f6; transition: background 0.1s; }
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: #fafafa; }
+.table tbody td { padding: 10px 14px; color: #374151; }
+
+.rank  { font-size: 12px; color: #9ca3af; font-weight: 600; width: 30px; }
+.pname { font-weight: 500; color: #111827; }
+.money { font-weight: 600; color: #111827; }
+
+.shareWrap { display: flex; align-items: center; gap: 8px; }
+.shareBar  { flex: 1; height: 5px; background: #f3f4f6; border-radius: 4px; overflow: hidden; min-width: 60px; }
+.shareFill { height: 100%; border-radius: 4px; }
+.sharePct  { font-size: 11px; color: #9ca3af; width: 28px; }
+
+@media (max-width: 900px) {
+  .kpiRow { grid-template-columns: repeat(2, 1fr); }
+  .table thead th:nth-child(3),
+  .table tbody td:nth-child(3),
+  .table thead th:nth-child(7),
+  .table tbody td:nth-child(7) { display: none; }
+}
